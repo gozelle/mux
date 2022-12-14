@@ -52,7 +52,7 @@ type routeTest struct {
 }
 
 func TestHost(t *testing.T) {
-
+	
 	tests := []routeTest{
 		{
 			title:       "Host route match",
@@ -450,7 +450,7 @@ func TestPath(t *testing.T) {
 			shouldMatch:  true,
 		},
 	}
-
+	
 	for _, test := range tests {
 		t.Run(test.title, func(t *testing.T) {
 			testRoute(t, test)
@@ -531,7 +531,7 @@ func TestPathPrefix(t *testing.T) {
 			shouldMatch:  false,
 		},
 	}
-
+	
 	for _, test := range tests {
 		t.Run(test.title, func(t *testing.T) {
 			testRoute(t, test)
@@ -640,7 +640,7 @@ func TestSchemeHostPath(t *testing.T) {
 			shouldMatch:  false,
 		},
 	}
-
+	
 	for _, test := range tests {
 		t.Run(test.title, func(t *testing.T) {
 			testRoute(t, test)
@@ -662,7 +662,7 @@ func TestHeaders(t *testing.T) {
 		}
 		return req
 	}
-
+	
 	tests := []routeTest{
 		{
 			title:       "Headers route, match",
@@ -701,7 +701,7 @@ func TestHeaders(t *testing.T) {
 			shouldMatch: true,
 		},
 	}
-
+	
 	for _, test := range tests {
 		t.Run(test.title, func(t *testing.T) {
 			testRoute(t, test)
@@ -753,7 +753,7 @@ func TestMethods(t *testing.T) {
 			shouldMatch: true,
 		},
 	}
-
+	
 	for _, test := range tests {
 		t.Run(test.title, func(t *testing.T) {
 			testRoute(t, test)
@@ -1062,7 +1062,7 @@ func TestQueries(t *testing.T) {
 			shouldMatch:     true,
 		},
 	}
-
+	
 	for _, test := range tests {
 		t.Run(test.title, func(t *testing.T) {
 			testTemplate(t, test)
@@ -1129,7 +1129,7 @@ func TestMatcherFunc(t *testing.T) {
 	m := func(r *http.Request, m *RouteMatch) bool {
 		return r.URL.Host == "aaa.bbb.ccc"
 	}
-
+	
 	tests := []routeTest{
 		{
 			title:       "MatchFunc route, match",
@@ -1150,7 +1150,7 @@ func TestMatcherFunc(t *testing.T) {
 			shouldMatch: false,
 		},
 	}
-
+	
 	for _, test := range tests {
 		t.Run(test.title, func(t *testing.T) {
 			testRoute(t, test)
@@ -1188,7 +1188,7 @@ func TestBuildVarsFunc(t *testing.T) {
 			shouldMatch:  true,
 		},
 	}
-
+	
 	for _, test := range tests {
 		t.Run(test.title, func(t *testing.T) {
 			testRoute(t, test)
@@ -1260,7 +1260,7 @@ func TestSubRouter(t *testing.T) {
 			pathTemplate: `/foo`,
 			shouldMatch:  true,
 		},
-
+		
 		{
 			route:        subrouter4.Path("/"),
 			request:      newRequest("GET", "http://localhost/foo/bar/"),
@@ -1420,7 +1420,7 @@ func TestSubRouter(t *testing.T) {
 			shouldMatch:  true,
 		},
 	}
-
+	
 	for _, test := range tests {
 		t.Run(test.title, func(t *testing.T) {
 			testRoute(t, test)
@@ -1435,18 +1435,18 @@ func TestNamedRoutes(t *testing.T) {
 	r1.NewRoute().Name("a")
 	r1.NewRoute().Name("b")
 	r1.NewRoute().Name("c")
-
+	
 	r2 := r1.NewRoute().Subrouter()
 	r2.NewRoute().Name("d")
 	r2.NewRoute().Name("e")
 	r2.NewRoute().Name("f")
-
+	
 	r3 := r2.NewRoute().Subrouter()
 	r3.NewRoute().Name("g")
 	r3.NewRoute().Name("h")
 	r3.NewRoute().Name("i")
 	r3.Name("j")
-
+	
 	if r1.namedRoutes == nil || len(r1.namedRoutes) != 10 {
 		t.Errorf("Expected 10 named routes, got %v", r1.namedRoutes)
 	} else if r1.Get("j") == nil {
@@ -1466,7 +1466,7 @@ func TestNameMultipleCalls(t *testing.T) {
 func TestStrictSlash(t *testing.T) {
 	r := NewRouter()
 	r.StrictSlash(true)
-
+	
 	tests := []routeTest{
 		{
 			title:          "Redirect path without slash",
@@ -1529,7 +1529,7 @@ func TestStrictSlash(t *testing.T) {
 			shouldRedirect: false,
 		},
 	}
-
+	
 	for _, test := range tests {
 		t.Run(test.title, func(t *testing.T) {
 			testRoute(t, test)
@@ -1542,7 +1542,7 @@ func TestStrictSlash(t *testing.T) {
 func TestUseEncodedPath(t *testing.T) {
 	r := NewRouter()
 	r.UseEncodedPath()
-
+	
 	tests := []routeTest{
 		{
 			title:        "Router with useEncodedPath, URL with encoded slash does match",
@@ -1565,7 +1565,7 @@ func TestUseEncodedPath(t *testing.T) {
 			shouldMatch:  false,
 		},
 	}
-
+	
 	for _, test := range tests {
 		t.Run(test.title, func(t *testing.T) {
 			testRoute(t, test)
@@ -1578,22 +1578,22 @@ func TestWalkSingleDepth(t *testing.T) {
 	r0 := NewRouter()
 	r1 := NewRouter()
 	r2 := NewRouter()
-
+	
 	r0.Path("/g")
 	r0.Path("/o")
 	r0.Path("/d").Handler(r1)
 	r0.Path("/r").Handler(r2)
 	r0.Path("/a")
-
+	
 	r1.Path("/z")
 	r1.Path("/i")
 	r1.Path("/l")
 	r1.Path("/l")
-
+	
 	r2.Path("/i")
 	r2.Path("/l")
 	r2.Path("/l")
-
+	
 	paths := []string{"g", "o", "r", "i", "l", "l", "a"}
 	depths := []int{0, 0, 0, 1, 1, 1, 0}
 	i := 0
@@ -1621,11 +1621,11 @@ func TestWalkSingleDepth(t *testing.T) {
 
 func TestWalkNested(t *testing.T) {
 	router := NewRouter()
-
+	
 	routeSubrouter := func(r *Route) (*Route, *Router) {
 		return r, r.Subrouter()
 	}
-
+	
 	gRoute, g := routeSubrouter(router.Path("/g"))
 	oRoute, o := routeSubrouter(g.PathPrefix("/o"))
 	rRoute, r := routeSubrouter(o.PathPrefix("/r"))
@@ -1633,7 +1633,7 @@ func TestWalkNested(t *testing.T) {
 	l1Route, l1 := routeSubrouter(i.PathPrefix("/l"))
 	l2Route, l2 := routeSubrouter(l1.PathPrefix("/l"))
 	l2.Path("/a")
-
+	
 	testCases := []struct {
 		path      string
 		ancestors []*Route
@@ -1646,7 +1646,7 @@ func TestWalkNested(t *testing.T) {
 		{"/g/o/r/i/l/l", []*Route{gRoute, oRoute, rRoute, iRoute, l1Route}},
 		{"/g/o/r/i/l/l/a", []*Route{gRoute, oRoute, rRoute, iRoute, l1Route, l2Route}},
 	}
-
+	
 	idx := 0
 	err := router.Walk(func(route *Route, router *Router, ancestors []*Route) error {
 		path := testCases[idx].path
@@ -1671,12 +1671,12 @@ func TestWalkNested(t *testing.T) {
 
 func TestWalkSubrouters(t *testing.T) {
 	router := NewRouter()
-
+	
 	g := router.Path("/g").Subrouter()
 	o := g.PathPrefix("/o").Subrouter()
 	o.Methods("GET")
 	o.Methods("PUT")
-
+	
 	// all 4 routes should be matched
 	paths := []string{"/g", "/g/o", "/g/o", "/g/o"}
 	idx := 0
@@ -1736,7 +1736,7 @@ func TestWalkErrorHandler(t *testing.T) {
 func TestSubrouterErrorHandling(t *testing.T) {
 	superRouterCalled := false
 	subRouterCalled := false
-
+	
 	router := NewRouter()
 	router.NotFoundHandler = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		superRouterCalled = true
@@ -1745,10 +1745,10 @@ func TestSubrouterErrorHandling(t *testing.T) {
 	subRouter.NotFoundHandler = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		subRouterCalled = true
 	})
-
+	
 	req, _ := http.NewRequest("GET", "http://localhost/bign8/was/here", nil)
 	router.ServeHTTP(NewRecorder(), req)
-
+	
 	if superRouterCalled {
 		t.Error("Super router 404 handler called when sub-router 404 handler is available.")
 	}
@@ -1757,7 +1757,7 @@ func TestSubrouterErrorHandling(t *testing.T) {
 	}
 }
 
-// See: https://github.com/gorilla/mux/issues/200
+// See: https://github.com/gozelle/mux/issues/200
 func TestPanicOnCapturingGroups(t *testing.T) {
 	defer func() {
 		if recover() == nil {
@@ -1798,7 +1798,7 @@ func testRoute(t *testing.T, test routeTest) {
 	if uri.Scheme == "" {
 		uri.Scheme = "http"
 	}
-
+	
 	var match RouteMatch
 	ok := route.Match(request, &match)
 	if ok != shouldMatch {
@@ -1895,12 +1895,12 @@ func testTemplate(t *testing.T, test routeTest) {
 	if len(hostTemplate) == 0 {
 		hostTemplate = test.host
 	}
-
+	
 	routePathTemplate, pathErr := route.GetPathTemplate()
 	if pathErr == nil && routePathTemplate != pathTemplate {
 		t.Errorf("(%v) GetPathTemplate not equal: expected %v, got %v", test.title, pathTemplate, routePathTemplate)
 	}
-
+	
 	routeHostTemplate, hostErr := route.GetHostTemplate()
 	if hostErr == nil && routeHostTemplate != hostTemplate {
 		t.Errorf("(%v) GetHostTemplate not equal: expected %v, got %v", test.title, hostTemplate, routeHostTemplate)
@@ -1960,22 +1960,22 @@ func (ho *TestA301ResponseWriter) WriteHeader(code int) {
 
 func Test301Redirect(t *testing.T) {
 	m := make(http.Header)
-
+	
 	func1 := func(w http.ResponseWriter, r *http.Request) {}
 	func2 := func(w http.ResponseWriter, r *http.Request) {}
-
+	
 	r := NewRouter()
 	r.HandleFunc("/api/", func2).Name("func2")
 	r.HandleFunc("/", func1).Name("func1")
-
+	
 	req, _ := http.NewRequest("GET", "http://localhost//api/?abc=def", nil)
-
+	
 	res := TestA301ResponseWriter{
 		hh:     m,
 		status: 0,
 	}
 	r.ServeHTTP(&res, req)
-
+	
 	if "http://localhost/api/?abc=def" != res.hh["Location"][0] {
 		t.Errorf("Should have complete URL with query string")
 	}
@@ -1984,16 +1984,16 @@ func Test301Redirect(t *testing.T) {
 func TestSkipClean(t *testing.T) {
 	func1 := func(w http.ResponseWriter, r *http.Request) {}
 	func2 := func(w http.ResponseWriter, r *http.Request) {}
-
+	
 	r := NewRouter()
 	r.SkipClean(true)
 	r.HandleFunc("/api/", func2).Name("func2")
 	r.HandleFunc("/", func1).Name("func1")
-
+	
 	req, _ := http.NewRequest("GET", "http://localhost//api/?abc=def", nil)
 	res := NewRecorder()
 	r.ServeHTTP(res, req)
-
+	
 	if len(res.HeaderMap["Location"]) != 0 {
 		t.Errorf("Shouldn't redirect since skip clean is disabled")
 	}
@@ -2006,12 +2006,12 @@ func TestSubrouterHeader(t *testing.T) {
 		fmt.Fprint(w, expected)
 	}
 	func2 := func(http.ResponseWriter, *http.Request) {}
-
+	
 	r := NewRouter()
 	s := r.Headers("SomeSpecialHeader", "").Subrouter()
 	s.HandleFunc("/", func1).Name("func1")
 	r.HandleFunc("/", func2).Name("func2")
-
+	
 	req, _ := http.NewRequest("GET", "http://localhost/", nil)
 	req.Header.Add("SomeSpecialHeader", "foo")
 	match := new(RouteMatch)
@@ -2031,38 +2031,38 @@ func TestSubrouterHeader(t *testing.T) {
 
 func TestNoMatchMethodErrorHandler(t *testing.T) {
 	func1 := func(w http.ResponseWriter, r *http.Request) {}
-
+	
 	r := NewRouter()
 	r.HandleFunc("/", func1).Methods("GET", "POST")
-
+	
 	req, _ := http.NewRequest("PUT", "http://localhost/", nil)
 	match := new(RouteMatch)
 	matched := r.Match(req, match)
-
+	
 	if matched {
 		t.Error("Should not have matched route for methods")
 	}
-
+	
 	if match.MatchErr != ErrMethodMismatch {
 		t.Error("Should get ErrMethodMismatch error")
 	}
-
+	
 	resp := NewRecorder()
 	r.ServeHTTP(resp, req)
 	if resp.Code != http.StatusMethodNotAllowed {
 		t.Errorf("Expecting code %v", 405)
 	}
-
+	
 	// Add matching route
 	r.HandleFunc("/", func1).Methods("PUT")
-
+	
 	match = new(RouteMatch)
 	matched = r.Match(req, match)
-
+	
 	if !matched {
 		t.Error("Should have matched route for methods")
 	}
-
+	
 	if match.MatchErr != nil {
 		t.Error("Should not have any matching error. Found:", match.MatchErr)
 	}
@@ -2070,17 +2070,17 @@ func TestNoMatchMethodErrorHandler(t *testing.T) {
 
 func TestErrMatchNotFound(t *testing.T) {
 	emptyHandler := func(w http.ResponseWriter, r *http.Request) {}
-
+	
 	r := NewRouter()
 	r.HandleFunc("/", emptyHandler)
 	s := r.PathPrefix("/sub/").Subrouter()
 	s.HandleFunc("/", emptyHandler)
-
+	
 	// Regular 404 not found
 	req, _ := http.NewRequest("GET", "/sub/whatever", nil)
 	match := new(RouteMatch)
 	matched := r.Match(req, match)
-
+	
 	if matched {
 		t.Errorf("Subrouter should not have matched that, got %v", match.Route)
 	}
@@ -2088,11 +2088,11 @@ func TestErrMatchNotFound(t *testing.T) {
 	if match.MatchErr != ErrNotFound {
 		t.Errorf("Expected ErrNotFound MatchErr, but was %v", match.MatchErr)
 	}
-
+	
 	// Now lets add a 404 handler to subrouter
 	s.NotFoundHandler = http.NotFoundHandler()
 	req, _ = http.NewRequest("GET", "/sub/whatever", nil)
-
+	
 	// Test the subrouter first
 	match = new(RouteMatch)
 	matched = s.Match(req, match)
@@ -2104,11 +2104,11 @@ func TestErrMatchNotFound(t *testing.T) {
 	if match.MatchErr != ErrNotFound {
 		t.Errorf("Expected ErrNotFound MatchErr, but was %v", match.MatchErr)
 	}
-
+	
 	// Now test the parent (MatchErr should propagate)
 	match = new(RouteMatch)
 	matched = r.Match(req, match)
-
+	
 	// Now we should get a match
 	if !matched {
 		t.Errorf("Router should have matched %s via subrouter", req.RequestURI)
@@ -2144,13 +2144,13 @@ func methodHandler(method string) http.HandlerFunc {
 // catchall handler is set for a mis-matching method.
 func TestMethodsSubrouterCatchall(t *testing.T) {
 	t.Parallel()
-
+	
 	router := NewRouter()
 	router.Methods("PATCH").Subrouter().PathPrefix("/").HandlerFunc(methodHandler("PUT"))
 	router.Methods("GET").Subrouter().HandleFunc("/foo", methodHandler("GET"))
 	router.Methods("POST").Subrouter().HandleFunc("/foo", methodHandler("POST"))
 	router.Methods("DELETE").Subrouter().HandleFunc("/foo", methodHandler("DELETE"))
-
+	
 	tests := []methodsSubrouterTest{
 		{
 			title:    "match GET handler",
@@ -2181,7 +2181,7 @@ func TestMethodsSubrouterCatchall(t *testing.T) {
 			wantCode: http.StatusMethodNotAllowed,
 		},
 	}
-
+	
 	for _, test := range tests {
 		t.Run(test.title, func(t *testing.T) {
 			testMethodsSubrouter(t, test)
@@ -2193,13 +2193,13 @@ func TestMethodsSubrouterCatchall(t *testing.T) {
 // strict-slash matchers.
 func TestMethodsSubrouterStrictSlash(t *testing.T) {
 	t.Parallel()
-
+	
 	router := NewRouter()
 	sub := router.PathPrefix("/").Subrouter()
 	sub.StrictSlash(true).Path("/foo").Methods("GET").Subrouter().HandleFunc("", methodHandler("GET"))
 	sub.StrictSlash(true).Path("/foo/").Methods("PUT").Subrouter().HandleFunc("/", methodHandler("PUT"))
 	sub.StrictSlash(true).Path("/foo/").Methods("POST").Subrouter().HandleFunc("/", methodHandler("POST"))
-
+	
 	tests := []methodsSubrouterTest{
 		{
 			title:    "match POST handler",
@@ -2239,7 +2239,7 @@ func TestMethodsSubrouterStrictSlash(t *testing.T) {
 			wantCode: http.StatusMethodNotAllowed,
 		},
 	}
-
+	
 	for _, test := range tests {
 		t.Run(test.title, func(t *testing.T) {
 			testMethodsSubrouter(t, test)
@@ -2251,13 +2251,13 @@ func TestMethodsSubrouterStrictSlash(t *testing.T) {
 // on a router with a path prefix matcher and method matcher.
 func TestMethodsSubrouterPathPrefix(t *testing.T) {
 	t.Parallel()
-
+	
 	router := NewRouter()
 	router.PathPrefix("/1").Methods("POST").Subrouter().HandleFunc("/2", methodHandler("POST"))
 	router.PathPrefix("/1").Methods("DELETE").Subrouter().HandleFunc("/2", methodHandler("DELETE"))
 	router.PathPrefix("/1").Methods("PUT").Subrouter().HandleFunc("/2", methodHandler("PUT"))
 	router.PathPrefix("/1").Methods("POST").Subrouter().HandleFunc("/2", methodHandler("POST2"))
-
+	
 	tests := []methodsSubrouterTest{
 		{
 			title:    "match first POST handler",
@@ -2288,7 +2288,7 @@ func TestMethodsSubrouterPathPrefix(t *testing.T) {
 			wantCode: http.StatusMethodNotAllowed,
 		},
 	}
-
+	
 	for _, test := range tests {
 		t.Run(test.title, func(t *testing.T) {
 			testMethodsSubrouter(t, test)
@@ -2300,7 +2300,7 @@ func TestMethodsSubrouterPathPrefix(t *testing.T) {
 // from method matchers registered on a root subrouter.
 func TestMethodsSubrouterSubrouter(t *testing.T) {
 	t.Parallel()
-
+	
 	router := NewRouter()
 	sub := router.PathPrefix("/1").Subrouter()
 	sub.Methods("POST").Subrouter().HandleFunc("/2", methodHandler("POST"))
@@ -2308,7 +2308,7 @@ func TestMethodsSubrouterSubrouter(t *testing.T) {
 	sub.Methods("PATCH").Subrouter().HandleFunc("/2", methodHandler("PATCH"))
 	sub.HandleFunc("/2", methodHandler("PUT")).Subrouter().Methods("PUT")
 	sub.HandleFunc("/2", methodHandler("POST2")).Subrouter().Methods("POST")
-
+	
 	tests := []methodsSubrouterTest{
 		{
 			title:    "match first POST handler",
@@ -2346,7 +2346,7 @@ func TestMethodsSubrouterSubrouter(t *testing.T) {
 			wantCode: http.StatusMethodNotAllowed,
 		},
 	}
-
+	
 	for _, test := range tests {
 		t.Run(test.title, func(t *testing.T) {
 			testMethodsSubrouter(t, test)
@@ -2358,13 +2358,13 @@ func TestMethodsSubrouterSubrouter(t *testing.T) {
 // with path variables in them.
 func TestMethodsSubrouterPathVariable(t *testing.T) {
 	t.Parallel()
-
+	
 	router := NewRouter()
 	router.Methods("GET").Subrouter().HandleFunc("/foo", methodHandler("GET"))
 	router.Methods("POST").Subrouter().HandleFunc("/{any}", methodHandler("POST"))
 	router.Methods("DELETE").Subrouter().HandleFunc("/1/{any}", methodHandler("DELETE"))
 	router.Methods("PUT").Subrouter().HandleFunc("/1/{any}", methodHandler("PUT"))
-
+	
 	tests := []methodsSubrouterTest{
 		{
 			title:    "match GET handler",
@@ -2402,7 +2402,7 @@ func TestMethodsSubrouterPathVariable(t *testing.T) {
 			wantCode: http.StatusMethodNotAllowed,
 		},
 	}
-
+	
 	for _, test := range tests {
 		t.Run(test.title, func(t *testing.T) {
 			testMethodsSubrouter(t, test)
@@ -2413,9 +2413,9 @@ func TestMethodsSubrouterPathVariable(t *testing.T) {
 func ExampleSetURLVars() {
 	req, _ := http.NewRequest("GET", "/foo", nil)
 	req = SetURLVars(req, map[string]string{"foo": "bar"})
-
+	
 	fmt.Println(Vars(req)["foo"])
-
+	
 	// Output: bar
 }
 
@@ -2425,7 +2425,7 @@ func testMethodsSubrouter(t *testing.T, test methodsSubrouterTest) {
 	req, _ := http.NewRequest(test.method, test.path, nil)
 	resp := NewRecorder()
 	test.router.ServeHTTP(resp, req)
-
+	
 	switch test.wantCode {
 	case http.StatusMethodNotAllowed:
 		if resp.Code != http.StatusMethodNotAllowed {
@@ -2433,17 +2433,17 @@ func testMethodsSubrouter(t *testing.T, test methodsSubrouterTest) {
 		} else if matchedMethod := resp.Body.String(); matchedMethod != "" {
 			t.Errorf(`(%s) Expected "405 Method Not Allowed", but %q handler was called`, test.title, matchedMethod)
 		}
-
+	
 	case http.StatusMovedPermanently:
 		if gotLocation := resp.HeaderMap.Get("Location"); gotLocation != test.redirectTo {
 			t.Errorf("(%s) Expected %q route-match to redirect to %q, but got %q", test.title, test.method, test.redirectTo, gotLocation)
 		}
-
+	
 	case http.StatusOK:
 		if matchedMethod := resp.Body.String(); matchedMethod != test.method {
 			t.Errorf("(%s) Expected %q handler to be called, but %q handler was called", test.title, test.method, matchedMethod)
 		}
-
+	
 	default:
 		expectedCodes := []int{http.StatusMethodNotAllowed, http.StatusMovedPermanently, http.StatusOK}
 		t.Errorf("(%s) Expected wantCode to be one of: %v, but got %d", test.title, expectedCodes, test.wantCode)
@@ -2455,13 +2455,13 @@ func TestSubrouterMatching(t *testing.T) {
 		none, stdOnly, subOnly uint8 = 0, 1 << 0, 1 << 1
 		both                         = subOnly | stdOnly
 	)
-
+	
 	type request struct {
 		Name    string
 		Request *http.Request
 		Flags   uint8
 	}
-
+	
 	cases := []struct {
 		Name                string
 		Standard, Subrouter func(*Router)
@@ -2608,7 +2608,7 @@ func TestSubrouterMatching(t *testing.T) {
 			},
 		},
 	}
-
+	
 	// case -> request -> router
 	for _, c := range cases {
 		t.Run(c.Name, func(t *testing.T) {
@@ -2649,7 +2649,7 @@ func Test_copyRouteConf(t *testing.T) {
 		}
 		r, _ = newRouteRegexp("hi", regexpTypeHost, routeRegexpOptions{})
 	)
-
+	
 	tests := []struct {
 		name string
 		args routeConf
@@ -2682,18 +2682,18 @@ func Test_copyRouteConf(t *testing.T) {
 			},
 		},
 	}
-
+	
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			// special case some incomparable fields of routeConf before delegating to reflect.DeepEqual
 			got := copyRouteConf(tt.args)
-
+			
 			// funcs not comparable, just compare length of slices
 			if len(got.matchers) != len(tt.want.matchers) {
 				t.Errorf("matchers different lengths: %v %v", len(got.matchers), len(tt.want.matchers))
 			}
 			got.matchers, tt.want.matchers = nil, nil
-
+			
 			// deep equal treats nil slice differently to empty slice so check for zero len first
 			{
 				bothZero := len(got.regexp.queries) == 0 && len(tt.want.regexp.queries) == 0
@@ -2702,13 +2702,13 @@ func Test_copyRouteConf(t *testing.T) {
 				}
 				got.regexp.queries, tt.want.regexp.queries = nil, nil
 			}
-
+			
 			// funcs not comparable, just compare nullity
 			if (got.buildVarsFunc == nil) != (tt.want.buildVarsFunc == nil) {
 				t.Errorf("build vars funcs unequal: %v %v", got.buildVarsFunc == nil, tt.want.buildVarsFunc == nil)
 			}
 			got.buildVarsFunc, tt.want.buildVarsFunc = nil, nil
-
+			
 			// finish the deal
 			if !reflect.DeepEqual(got, tt.want) {
 				t.Errorf("route confs unequal: %v %v", got, tt.want)
@@ -2722,12 +2722,12 @@ func TestMethodNotAllowed(t *testing.T) {
 	router := NewRouter()
 	router.HandleFunc("/thing", handler).Methods(http.MethodGet)
 	router.HandleFunc("/something", handler).Methods(http.MethodGet)
-
+	
 	w := NewRecorder()
 	req := newRequest(http.MethodPut, "/thing")
-
+	
 	router.ServeHTTP(w, req)
-
+	
 	if w.Code != http.StatusMethodNotAllowed {
 		t.Fatalf("Expected status code 405 (got %d)", w.Code)
 	}
@@ -2744,15 +2744,15 @@ func (h customMethodNotAllowedHandler) ServeHTTP(w http.ResponseWriter, r *http.
 
 func TestSubrouterCustomMethodNotAllowed(t *testing.T) {
 	handler := func(w http.ResponseWriter, r *http.Request) { w.WriteHeader(http.StatusOK) }
-
+	
 	router := NewRouter()
 	router.HandleFunc("/test", handler).Methods(http.MethodGet)
 	router.MethodNotAllowedHandler = customMethodNotAllowedHandler{msg: "custom router handler"}
-
+	
 	subrouter := router.PathPrefix("/sub").Subrouter()
 	subrouter.HandleFunc("/test", handler).Methods(http.MethodGet)
 	subrouter.MethodNotAllowedHandler = customMethodNotAllowedHandler{msg: "custom sub router handler"}
-
+	
 	testCases := map[string]struct {
 		path   string
 		expMsg string
@@ -2766,23 +2766,23 @@ func TestSubrouterCustomMethodNotAllowed(t *testing.T) {
 			expMsg: "custom sub router handler",
 		},
 	}
-
+	
 	for name, tc := range testCases {
 		t.Run(name, func(tt *testing.T) {
 			w := NewRecorder()
 			req := newRequest(http.MethodPut, tc.path)
-
+			
 			router.ServeHTTP(w, req)
-
+			
 			if w.Code != http.StatusMethodNotAllowed {
 				tt.Errorf("Expected status code 405 (got %d)", w.Code)
 			}
-
+			
 			b, err := ioutil.ReadAll(w.Body)
 			if err != nil {
 				tt.Errorf("failed to read body: %v", err)
 			}
-
+			
 			if string(b) != tc.expMsg {
 				tt.Errorf("expected msg %q, got %q", tc.expMsg, string(b))
 			}
@@ -2795,12 +2795,12 @@ func TestSubrouterNotFound(t *testing.T) {
 	router := NewRouter()
 	router.Path("/a").Subrouter().HandleFunc("/thing", handler).Methods(http.MethodGet)
 	router.Path("/b").Subrouter().HandleFunc("/something", handler).Methods(http.MethodGet)
-
+	
 	w := NewRecorder()
 	req := newRequest(http.MethodPut, "/not-present")
-
+	
 	router.ServeHTTP(w, req)
-
+	
 	if w.Code != http.StatusNotFound {
 		t.Fatalf("Expected status code 404 (got %d)", w.Code)
 	}
@@ -2814,7 +2814,7 @@ func TestContextMiddleware(t *testing.T) {
 			h.ServeHTTP(w, r.WithContext(ctx))
 		})
 	}
-
+	
 	r := NewRouter()
 	r.Handle("/path/{foo}", withTimeout(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		vars := Vars(r)
@@ -2822,7 +2822,7 @@ func TestContextMiddleware(t *testing.T) {
 			t.Fatal("Expected foo var to be set")
 		}
 	})))
-
+	
 	rec := NewRecorder()
 	req := newRequest("GET", "/path/bar")
 	r.ServeHTTP(rec, req)
@@ -2878,23 +2878,23 @@ func newRequest(method, url string) *http.Request {
 	if i := len(req.URL.Scheme); i > 0 {
 		opaque = url[i+1:]
 	}
-
+	
 	if i := strings.LastIndex(opaque, "?"); i > -1 {
 		opaque = opaque[:i]
 	}
 	if i := strings.LastIndex(opaque, "#"); i > -1 {
 		opaque = opaque[:i]
 	}
-
+	
 	// Escaped host+path workaround as detailed in https://golang.org/pkg/net/url/#URL
 	// for < 1.5 client side workaround
 	req.URL.Opaque = opaque
-
+	
 	// Simulate writing to wire
 	var buff bytes.Buffer
 	req.Write(&buff)
 	ioreader := bufio.NewReader(&buff)
-
+	
 	// Parse request off of 'wire'
 	req, err = http.ReadRequest(ioreader)
 	if err != nil {
@@ -2906,15 +2906,15 @@ func newRequest(method, url string) *http.Request {
 // create a new request with the provided headers
 func newRequestWithHeaders(method, url string, headers ...string) *http.Request {
 	req := newRequest(method, url)
-
+	
 	if len(headers)%2 != 0 {
 		panic(fmt.Sprintf("Expected headers length divisible by 2 but got %v", len(headers)))
 	}
-
+	
 	for i := 0; i < len(headers); i += 2 {
 		req.Header.Set(headers[i], headers[i+1])
 	}
-
+	
 	return req
 }
 

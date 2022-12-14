@@ -1,3 +1,3 @@
-module github.com/gorilla/mux
+module github.com/gozelle/mux
 
 go 1.12

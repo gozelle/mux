@@ -3,8 +3,8 @@ package mux_test
 import (
 	"log"
 	"net/http"
-
-	"github.com/gorilla/mux"
+	
+	"github.com/gozelle/mux"
 )
 
 // Define our struct
@@ -24,7 +24,7 @@ func (amw *authenticationMiddleware) Populate() {
 func (amw *authenticationMiddleware) Middleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		token := r.Header.Get("X-Session-Token")
-
+		
 		if user, found := amw.tokenUsers[token]; found {
 			// We found the token in our map
 			log.Printf("Authenticated user %s\n", user)
